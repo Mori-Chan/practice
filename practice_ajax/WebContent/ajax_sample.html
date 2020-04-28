@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Ajax sample</title>
+        <script type="text/javascript" src="scripts/jquery-3.4.1.js"></script>
+        <script type="text/javascript">
+            jQuery(function($){
+                $("#my_button").click(function(){
+                    $.ajax({
+                        url: "json_model.do",
+                        type: "POST",
+                        cache: false,
+                        dataType: "json",
+                        success: function(response){
+                            var id = response.id;
+                            var name = response.name;
+                            var price = response.price;
+                            var src = "id=" + id + "<br>name=" + name + "<br>price=" + price;
+                            $("#my_div").html(src);
+                        }
+                    });
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <form name="my_form" onSubmit="return false">
+            <input type="button" id="my_button" value="request Model">
+        </form>
+        <hr>
+        <div id="my_div"></div>
+    </body>
+</html>

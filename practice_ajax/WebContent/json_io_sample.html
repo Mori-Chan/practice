@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>JSON I/O sample</title>
+        <script type="text/javascript" src="scripts/jquery-3.4.1.js"></script>
+        <script type="text/javascript" src="scripts/jquery.json.js"></script>
+        <script type="text/javascript">
+            jQuery(function($){
+                $("#my_form").on("click", 'input[name="my_button"]', function(event){
+                    var formElement = $("#my_form");
+                    var parameters = new Object();
+                        parameters.id = formElement.find("[name=product_id]").val();
+                        parameters.name = formElement.find("[name=product_name]").val();
+                        parameters.price = formElement.find("[name=product_price]").val();
+                    var jsonText = $.toJSON(parameters);
+                    var resourcePath = event.target.value;
+                    $.ajax({
+                        url: resourcePath,
+                        type: "POST",
+                        contentType: "application/json",
+                        data: jsonText,
+                        cache: false,
+                        dataType: "json"
+                    }).done(function(response){
+                            var textURL = response.text_url;
+                            var textId = response.text_id;
+                            var textName = response.text_name;
+                            var textPrice = response.text_price;
+                            var src = textURL + "<br>" + textId + "<br>" + textName + "<br>" + textPrice;
+                            $("#my_div").html(src);
+                    }).fail(function(response){
+                        alert("failure !");
+                    });
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <form name="input_form" id="my_form" onSubmit="return false">
+            id: <input type="text" name="product_id"><br>
+            name: <input type="text" name="product_name"><br>
+            price: <input type="text" name="product_price"><p>
+            <input type="button" name="my_button" id="button4model" value="request_model.do">
+            <input type="button" name="my_button" id="button4map" value="request_map.do">
+        </form>
+        <hr>
+        <div id="my_div"></div>
+    </body>
+</html>
